@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tasbih_digital/get_storage.dart';
 import 'package:tasbih_digital/utils_ui.dart';
 import 'package:vibration/vibration.dart';
 
@@ -56,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return "$minutes:$seconds:$milliseconds";
   }
 
+  Color _colorStopWatch = Colors.black;
   List<ModelTasbih> _listTasbih = [];
   late ScrollController _scrollController;
 
@@ -82,6 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
       keepScrollOffset: true,
     );
 
+    var ambilTasbih = getBox.getTasbih();
+    logger.i('ambiltasbih : $ambilTasbih');
   }
 
   @override
@@ -100,13 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(color: Colors.white, fontSize: utilsUI.setSp(24.0)),
                 textAlign: TextAlign.center,
               )),
-          _listTasbih.length > 0 ? Container(
+          Container(
               width: utilsUI.screenWidth(context),
               height: utilsUI.setHeight(200.0),
               margin: const EdgeInsets.all(5.0),
               padding: const EdgeInsets.all(5.0),
               decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(25.0)),
-              child: GridView.builder(
+              child:_listTasbih.length > 0 ?  GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4, // number of items in each row
                   mainAxisSpacing: 8.0, // spacing between rows
@@ -138,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 },
-              )):Container(),
+              ):Container(child: Center(child: Text('Dzikir Tersimpan Akan tampil disini',style: TextStyle(color: Colors.white),)),)),
           Container(
               width: utilsUI.screenWidth(context),
               height: utilsUI.setHeight(200.0),
@@ -242,18 +246,31 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Align(
                     alignment: Alignment.topCenter,
-                    child: Container(
-                        margin: const EdgeInsets.all(5.0),
-                        padding: EdgeInsets.symmetric(vertical: utilsUI.setHeight(5.0), horizontal: utilsUI.setWidth(15.0)),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.amber,
-                        ),
-                        child: Text(
-                          _lastStopWatch,
-                          style: GoogleFonts.archivoBlack(color: Colors.black, fontSize: utilsUI.setSp(20.0)),
-                          textAlign: TextAlign.right,
-                        )),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if(_colorStopWatch == Colors.black){
+                            _colorStopWatch = Colors.amber;
+                          }else{
+                            _colorStopWatch = Colors.black;
+                          }
+
+                        });
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                          margin: const EdgeInsets.all(5.0),
+                          padding: EdgeInsets.symmetric(vertical: utilsUI.setHeight(5.0), horizontal: utilsUI.setWidth(15.0)),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colors.amber,
+                          ),
+                          child: Text(
+                            _lastStopWatch,
+                            style: GoogleFonts.archivoBlack(color: _colorStopWatch, fontSize: utilsUI.setSp(20.0)),
+                            textAlign: TextAlign.right,
+                          )),
+                    ),
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -273,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           child: Text(
                             returnFormattedText(),
-                            style: GoogleFonts.archivoBlack(color: Colors.black, fontSize: utilsUI.setSp(20.0)),
+                            style: GoogleFonts.archivoBlack(color: _colorStopWatch, fontSize: utilsUI.setSp(20.0)),
                             textAlign: TextAlign.right,
                           )),
                     ),
@@ -330,6 +347,7 @@ class _MyHomePageState extends State<MyHomePage> {
             tasbish_last: _counter,
             tassbih_start: _startTasbih,
             tassbih_end: DateTime.now().toString()));
+        getBox.setTasbih(json.encode(_listTasbih));
         _resetTasbih();
         _toEnd();
       }
