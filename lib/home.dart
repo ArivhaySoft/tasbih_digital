@@ -386,6 +386,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _resetTasbih() {
     setState(() {
       _counter = 0;
+      getBox.setCounter(_counter);
       _lastStopWatch = "00:00:00";
       stopwatch.stop();
       stopwatch.reset();
