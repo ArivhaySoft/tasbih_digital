@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tasbih_digital/get_storage.dart';
+import 'package:tasbih_digital/model_tasbih.dart';
 import 'package:tasbih_digital/utils_ui.dart';
 import 'package:vibration/vibration.dart';
 
@@ -67,6 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_counter == 1) {
         _startTasbih = DateTime.now().toString();
       }
+      
+      getBox.setCounter(_counter);
       Vibration.vibrate(duration: 100);
       handleStartStop();
     });
@@ -85,7 +88,27 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     var ambilTasbih = getBox.getTasbih();
-    logger.i('ambiltasbih : $ambilTasbih');
+    _counter = getBox.getCounter()!;
+
+    if(ambilTasbih != ""){
+      var list = json.decode(ambilTasbih.toString()) as List<dynamic>;
+      for (var json in list) {
+        _listTasbih.add(ModelTasbih(
+            id: json['id'],
+            judul: json['judul'],
+            durasi: json['durasi'],
+            kelompok: json['kelompok'],
+            tasbih: json['tasbih'],
+            tasbish_last: json['tasbish_last'],
+            tassbih_start: json['tassbih_start'],
+            tassbih_end: json['tassbih_end'])
+        );
+      }
+
+    }
+
+    logger.i('$_counter - ambiltasbih : $ambilTasbih');
+    
   }
 
   @override
@@ -127,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Column(
                         children: [
                           Text(
-                            data.judul,
+                            data.judul.toString(),
                             style: TextStyle(fontSize: 12.0, color: Colors.white),
                           ),
                           Container(
@@ -184,7 +207,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     adaptiveAction(
                                       context: context,
-                                      onPressed: () => _resetTasbih(),
+                                      onPressed: () {
+                                        _resetTasbih();
+                                        Get.back();
+                                        },
                                       child: const Text('OK'),
                                     ),
                                   ],
@@ -219,7 +245,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     adaptiveAction(
                                       context: context,
-                                      onPressed: () => _clearAll(),
+                                      onPressed: () {
+                                        _clearAll();
+                                        Get.back();
+                                      },
                                       child: const Text('OK'),
                                     ),
                                   ],
@@ -357,46 +386,31 @@ class _MyHomePageState extends State<MyHomePage> {
   _resetTasbih() {
     setState(() {
       _counter = 0;
-      Get.back();
       _lastStopWatch = "00:00:00";
       stopwatch.stop();
       stopwatch.reset();
     });
   }
 
-  void _toEnd() {                                                     // NEW
-    _scrollController.animateTo(                                      // NEW
-      _scrollController.position.maxScrollExtent,                     // NEW
-      duration: const Duration(milliseconds: 500),                    // NEW
-      curve: Curves.ease,                                             // NEW
-    );                                                                // NEW
+  void _toEnd() {
+    try {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
+    }catch(e){
+      logger.e(e.toString());
+    }
   }
 
   _clearAll() {
     setState(() {
       _listTasbih.clear();
       _resetTasbih();
+      getBox.clear();
     });
   }
 }
 
-class ModelTasbih {
-  final int id;
-  final String judul;
-  final String durasi;
-  final String kelompok;
-  final int tasbih;
-  final int tasbish_last;
-  final String tassbih_start;
-  final String tassbih_end;
 
-  ModelTasbih(
-      {required this.id,
-      required this.judul,
-      required this.durasi,
-      required this.kelompok,
-      required this.tasbih,
-      required this.tasbish_last,
-      required this.tassbih_start,
-      required this.tassbih_end});
-}

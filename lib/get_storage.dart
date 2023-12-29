@@ -5,12 +5,12 @@ import 'package:get_storage/get_storage.dart';
 class GetStoragePref {
   final box = GetStorage();
 
-  //GetStoradge
-  final _cariRiwayat = "_cariRiwayat";
+  final _tasbih_kelompok = "_tasbih_kelompok";
+  final _tasbih_counter = "_tasbih_counter";
 
   String? getTasbih() {
     try {
-      return box.read(_cariRiwayat) == null ? '' : box.read(_cariRiwayat);
+      return box.read(_tasbih_kelompok) ?? '';
     } catch (e) {
       return '';
     }
@@ -18,46 +18,21 @@ class GetStoragePref {
 
   void setTasbih(String? value) {
     if (value != null) {
-      box.write(_cariRiwayat, value);
+      box.write(_tasbih_kelompok, value);
     }
   }
 
-
-  void putCache(String key, String value, int jam) {
-    // print('putCache : ' + key + ' ' + jam.toString() + ' : ' + value);
-    box.write(key, value);
-    //tanggal disimpan
-    box.write(key + "LastUpdate", DateTime.now().millisecondsSinceEpoch);
-    //hitungan jam
-    box.write(key + "Lama", jam * 60 * 60 * 1000);
-  }
-
-  String? getCache(String key) {
-    // print('getCache : ' + key);
-    if (!box.hasData(key)) {
-      return '';
-    }
-    int now = DateTime.now().millisecondsSinceEpoch;
-    int last = box.read(key + "LastUpdate") ?? 0;
-    int lama = box.read(key + "Lama") ?? 0;
-    int rem = now - last;
-    if (rem > lama) {
-      return '';
-    }
-    return box.read(key);
-  }
-
-  String? getString(String key) {
+  int? getCounter() {
     try {
-      return box.read(key) == null ? '' : box.read(key);
+      return box.read(_tasbih_counter) ?? 0;
     } catch (e) {
-      return '';
+      return 0;
     }
   }
 
-  void setString(String? key, String? value) {
+  void setCounter(int? value) {
     if (value != null) {
-      box.write(key!, value);
+      box.write(_tasbih_counter, value);
     }
   }
 
@@ -68,7 +43,7 @@ class GetStoragePref {
   /*
    * Saat logout, panggil ini untuk hapus data
    */
-  void logout() {
+  void clear() {
     box.erase();
   }
 }
