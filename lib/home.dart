@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tasbih_digital/alquran.dart';
 import 'package:tasbih_digital/get_storage.dart';
 import 'package:tasbih_digital/model_tasbih.dart';
 import 'package:tasbih_digital/utils_ui.dart';
@@ -118,14 +119,34 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-              padding: EdgeInsets.only(top: utilsUI.setHeight(40.0)),
+              padding: EdgeInsets.only(
+                  top: utilsUI.setHeight(40.0),
+                  bottom: utilsUI.setHeight(10.0),
+                left: utilsUI.setWidth(10.0)
+              ),
               width: utilsUI.screenWidth(context),
               decoration: const BoxDecoration(
                   color: Colors.black, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25.0), bottomRight: Radius.circular(25.0))),
-              child: Text(
-                'بسم الله الرحمن الرحيم',
-                style: TextStyle(color: Colors.white, fontSize: utilsUI.setSp(24.0)),
-                textAlign: TextAlign.center,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'بسم الله الرحمن الرحيم',
+                      style: TextStyle(color: Colors.white, fontSize: utilsUI.setSp(24.0)),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: (){
+                        Get.to(AlQuran());
+                      },
+                      icon: Icon(Icons.menu_book,color: Colors.white,),
+                    ),
+                  )
+                ],
               )),
           Container(
               width: utilsUI.screenWidth(context),
