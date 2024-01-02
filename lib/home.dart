@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'بسم الله الرحمن الرحيم',
+                      'بسم الله الرحمن الرحيم' + '\n' + 'رَبَّهٗٓ اَنِّيْ مَسَّنِيَ الضُّرُّ وَاَنْتَ اَرْحَمُ الرّٰحِمِيْنَۚ',
                       style: TextStyle(color: Colors.white, fontSize: utilsUI.setSp(24.0)),
                       textAlign: TextAlign.center,
                     ),
@@ -186,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 },
-              ):Container(child: Center(child: Text('Dzikir Tersimpan Akan tampil disini',style: TextStyle(color: Colors.white),)),)),
+              ):Container(child: Center(child: Text('Dzikir Tersimpan Akan tampil disini ( 786x selama 7 hari berturut turut )',style: TextStyle(color: Colors.white),)),)),
           Container(
               width: utilsUI.screenWidth(context),
               height: utilsUI.setHeight(200.0),
