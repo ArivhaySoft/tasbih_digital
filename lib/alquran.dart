@@ -56,9 +56,16 @@ class _AlQuranState extends State<AlQuran> {
                   .map((data) =>
                   Container(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                       Text('${data.suratText.toString().trim()}',),
+                        Container(
+                            child:
+                            Text(data.suratText!,
+                              style:TextStyle(
+                                  fontFamily: 'KFGQPC Uthmanic Script HAFS',
+                                fontSize: utilsUI.setSp(24.0)
+                              ),)
+                        ),
+
                         Text(data.suratName.toString()  + ' ( ' + data.id.toString() + ' / ' + data.countAyat.toString() + ' )'),
                         Text(data.suratTerjemahan.toString())
                       ],
