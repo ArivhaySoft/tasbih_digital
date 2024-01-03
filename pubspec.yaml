@@ -37,6 +37,7 @@ dependencies:
   get: ^4.6.6
   get_storage: ^2.1.1
   google_fonts: ^6.1.0
+  flutter_widget_from_html: ^0.14.10+1
   logger: ^2.0.2+1
   vibration: ^1.8.4
 
@@ -78,3 +79,8 @@ flutter:
     - asset/images/
     - asset/json/
     - asset/json/alquran/
+
+  fonts:
+      - family: KFGQPC Uthmanic Script HAFS
+        fonts:
+          - asset: asset/fonts/UthmanicHafsVer09.otf

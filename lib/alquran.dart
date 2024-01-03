@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tasbih_digital/model_alquran_surat.dart' as modelQuranSurat;
 import 'package:tasbih_digital/model_alquran_surat_daftar.dart'  as modelQuranSuratDaftar;
 import 'package:tasbih_digital/utils_ui.dart';
@@ -25,7 +27,7 @@ class _AlQuranState extends State<AlQuran> {
 
  Future<List<modelQuranSuratDaftar.Data>> _ambilDaftarSurat() async {
    var response = await rootBundle.loadString('asset/json/alquran/daftar_surat.json');
-   var resData = modelQuranSuratDaftar.ModelAlquranSuratDaftar.fromJson(json.decode(response));
+   var resData = modelQuranSuratDaftar.ModelAlquranSuratDaftar.fromJson(jsonDecode(response));
    return resData.data!.toList();
  }
 
@@ -54,9 +56,10 @@ class _AlQuranState extends State<AlQuran> {
                   .map((data) =>
                   Container(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(data.suratText.toString() + ' ( ' + data.countAyat.toString() + ' )'),
-                        Text(data.suratName.toString() ),
+                       Text('${data.suratText.toString().trim()}',),
+                        Text(data.suratName.toString()  + ' ( ' + data.id.toString() + ' / ' + data.countAyat.toString() + ' )'),
                         Text(data.suratTerjemahan.toString())
                       ],
                     ),
