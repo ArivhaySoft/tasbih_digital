@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tasbih_digital/alquran.dart';
+import 'package:tasbih_digital/duriat.dart';
 import 'package:tasbih_digital/get_storage.dart';
 import 'package:tasbih_digital/model_tasbih.dart';
 import 'package:tasbih_digital/utils_ui.dart';
@@ -142,6 +143,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: IconButton(
                       onPressed: (){
                         Get.to(AlQuran());
+                      },
+                      icon: Icon(Icons.menu_book,color: Colors.white,),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: (){
+                        Get.to(Duriat());
                       },
                       icon: Icon(Icons.menu_book,color: Colors.white,),
                     ),

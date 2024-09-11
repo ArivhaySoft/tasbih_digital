@@ -7,6 +7,7 @@ class GetStoragePref {
 
   final _tasbih_kelompok = "_tasbih_kelompok";
   final _tasbih_counter = "_tasbih_counter";
+  final _tasbih_duriat = "_tasbih_duriat";
 
   String? getTasbih() {
     try {
@@ -17,6 +18,20 @@ class GetStoragePref {
   }
 
   void setTasbih(String? value) {
+    if (value != null) {
+      box.write(_tasbih_kelompok, value);
+    }
+  }
+
+  String? getDuriat() {
+    try {
+      return box.read(_tasbih_kelompok) ?? '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  void setDuriat(String? value) {
     if (value != null) {
       box.write(_tasbih_kelompok, value);
     }
